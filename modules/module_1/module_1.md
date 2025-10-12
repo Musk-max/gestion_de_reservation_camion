@@ -27,3 +27,12 @@ warning: in the working copy of 'src/SystemeEmprunt.java', LF will be replaced b
 ➡️ Ces avertissements peuvent être ignorés, car ils n’affectent ni les fichiers ni le code.
 
 Copier le code
+# Dimanche 12/10/2025
+## Suivi des changements de classes *
+1) de num 1 à 27 site 
+2) de 27 à  29    Client
+3) 30 à     31      SystemeEmprunt
+4) 31 à 32 Client
+5) 33    à 35        Site
+6) 36   37   Client
+7) revoir ma formule de calcul de la duree
