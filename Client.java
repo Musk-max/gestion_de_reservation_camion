@@ -12,12 +12,31 @@ public class Client extends Thread {
      }
     //31' methode qui simule le trajet du Client
     public void run(){
+        //38 avant de demarrer le client doit emprunter d'abord voir 38'
+           this.emprunter();
+       
         //32 calcul de la distance entre les sites d'après l'énoncé du sujet c'est la différence des id entre les sites en valeur absolue
         int distance= Math.abs(this.siteDep.getId()-this.siteArr.getId());
         //36 calcul de la duree selon la forumle duree = distance / vitesse et on suppose que les cycliste on une vitesse de 24 km/h
          long duration=(long) distance/1;
-         System.out.println(distance+"km et "+duration + "ms");
+         System.out.println("Je debute mon trajet entre le site " + siteDep.getId()+" et le site "+ siteArr.getId());
+         System.out.println("je parcours: "+distance+"km en une durée de "+duration + "ms");
          //37 simulation du temps de trajet du cycliste selon l'énoncé
         try{Thread.sleep(duration);}catch(Exception e){}
+        //39 Après le trajet il doit restituer le velo voir 39'
+          this.restituer();
+        
+    }
+    //38'
+    public void  emprunter(){
+       this.siteDep.debut_emprunt();
+       this.siteDep.emprunter();
+       this.siteDep.fin_emprunt();
+    }
+    //39'
+    public void restituer(){
+        this.siteArr.debut_restituer();
+        this.siteArr.restituer();
+        this.siteArr.fin_restituer();
     }
  }

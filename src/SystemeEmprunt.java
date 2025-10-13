@@ -31,7 +31,6 @@ class SystemeEmprunt {
 			}
 			while(siteDep == siteArr);//30  ajout de l'instanciation des site dans un do while pour qu'ils soient réinstanciés tant qu'ils sont différents
 			clients[i] = new Client(sites[siteDep], sites[siteArr]);
-			System.out.println(siteDep+"à "+siteArr);
 		}
 
 		/* Instanciation du camion */
