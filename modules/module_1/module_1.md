@@ -41,3 +41,5 @@ Copier le code
 9) Comprendre pour quoi le nombre de vélo affiché dans debut restituer est différent du nombre de vélo dans emprunter
     ( C'est à dire quand on execute emprunter on passe de 5 à 4 vélo; cette valeur de 4 la est sensée persister également dans la méthode
        debut restituer, mais quand on affiche le nombre de vélo récupérer par début restituer il est de 5 comme au début ), est ce parceque nb_velo devrait etre manipulé en section critique ?
+# Mardi 14/10/25
+10) En fait ce qui se passe en 9 est tout à fait normal car le site de depart lui a maintenant 4 velo mais le site d'arrivée lui en 5+1 maintenant car c'est laba que le client restitue le velo qu'il a pris sur le site de départ

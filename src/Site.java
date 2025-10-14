@@ -75,8 +75,9 @@ Synchronised void emprunter(){
 }
 //19 action d'emprunter
 public void emprunter(){
-   nb_velo--;
-   System.out.println("j'emprunte 1 velo donc il reste nb_velo= "+nb_velo);
+   int ancien_nb_velo=nb_velo;
+   nb_velo-=1;
+   System.out.println("j'emprunte 1 velo donc le nombre de vélo passe de :"+ancien_nb_velo+" à "+ nb_velo+" sur le site de départ");
 }
 
 synchronized void fin_emprunt(){
@@ -96,7 +97,7 @@ synchronized void debut_restituer(){
   System.out.println("je commence à restituer le vélo emprunté je vérifie s'il n'y a pas quelqu'un qui a une restitution en cours");
   System.out.println(" restitution en cours: "+restitution_en_cours);
   System.out.println(" je vérifie que le nombre de vélo n'atteint pas stock max autrement il n'y aurait plus de place pour restituer je devrais attendre");
-  System.out.println("nb_velo: "+nb_velo+" et stock max est égal à :" +STOCK_MAX);
+  System.out.println("nb_velo: "+ nb_velo +" et stock max est égal à :" +STOCK_MAX);
   System.out.println("je vérifie que le dernier emprunteur a fini égalemnt");
   System.out.println("nb_emprunteurs: "+nb_emprunteurs);
 
@@ -113,8 +114,9 @@ synchronized void debut_restituer(){
 // 9 action de restituer
 
 public void restituer(){
+     int ancien_nb_velo=nb_velo;
      nb_velo ++;
-    System.out.println("je restitue un velon donc nb_velo = : "+ nb_velo);
+    System.out.println("je restitue un velon donc nb_velo passe de : "+ ancien_nb_velo+" à "+ nb_velo+" sur le site d'arrivée");
   }
 //25
 
