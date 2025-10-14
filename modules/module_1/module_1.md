@@ -42,4 +42,10 @@ Copier le code
     ( C'est à dire quand on execute emprunter on passe de 5 à 4 vélo; cette valeur de 4 la est sensée persister également dans la méthode
        debut restituer, mais quand on affiche le nombre de vélo récupérer par début restituer il est de 5 comme au début ), est ce parceque nb_velo devrait etre manipulé en section critique ?
 # Mardi 14/10/25
-10) En fait ce qui se passe en 9 est tout à fait normal car le site de depart lui a maintenant 4 velo mais le site d'arrivée lui en 5+1 maintenant car c'est laba que le client restitue le velo qu'il a pris sur le site de départ
+10) En fait ce qui se passe en 9 est tout à fait normal car le site de depart lui a maintenant 4 velo mais le site d'arrivée lui en 5+1 maintenant car c'est laba que le client restitue le velo qu'il a pris sur le site de départ'
+11) 40 à 41' SystemeEmprunt'
+12) Faison en sorte  que chaque thread qui attend affiche les raisons de son attente afin que nous puissions bien suivre la trame d\'execution
+13) Idem pour les notifications faisons en sorte que chaque process qui réveille les autres dise pourquoi il les a réveillé
+14) Me debrouiller pour afficher le nom  du client qui vient de demarrer (j'ai donc modifier nos constructeurs de clients dans tous les fichiers pour que a l'initialisation chaque client ait un numero)
+15) Normalement de pas son contenu la méthode emprunter de client devrait etre atomique sauf si la premiere instruction c\'est l\'ordo qui choisit qui la joue
+16) question 1 : pourquoi les starts ne sont pas séquentiels dans l\'execution de leur premiere methode en tout cas c\'est un constat que je viens de faire

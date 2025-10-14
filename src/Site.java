@@ -3,7 +3,7 @@ public class Site {
 
 /* Constantes communes à tous les sites */
 
-static final int STOCK_INIT = 5;
+static final int STOCK_INIT = 1;
 static final int STOCK_MAX = 10;
 static final int BORNE_SUP = 8;
 static final int BORNE_INF = 2;
@@ -63,21 +63,36 @@ Synchronised void emprunter(){
   //15 debut emprunt s'assure que lorque un emprunt est en cours ou si il n'y a plus de velo oubien le dernier restitueur n'a pas restitué on soit bloqué
   // 18 je dois bien analyser ou tester pendant plusieurs jours cette condition dans le while de debut emprunt pour l'ameliorer
   synchronized void debut_emprunt(){
+        System.out.println(" est ce que je peux emprunter un velo sur le site "+this.getId()+ " ? ( debut_emprunt!!)");
+
+
    //  21) j'ai enlevé  restitution_en_cours dans le while car elle est redondante avec nb_restituteur !=0 selon moi 
-   System.out.println("emprunt en cours: "+emprunt_en_cours);
-    System.out.println("nb_velo: "+nb_velo);
-    System.out.println("nb_restituteurs: "+nb_restitueurs);
+   
+   // affichage lorsque rien nous bloque ou bien pour dire la cause du blocage lorsqu'on souhaite emprunter
+   if(nb_velo != 0 &&  nb_restitueurs ==0 && !emprunt_en_cours ){
+    System.out.println("rien ne me bloque sur le site "+this.getId()+" , je peux directement emprunter");
+   }else{
+       if(emprunt_en_cours){
+     System.out.println("Emprunt en cours pour le site "+this.getId()+" est" +emprunt_en_cours+" Donc je suis obligé d\'attendre que la personne qui est déjà entrain d\'emprunter finisse");
+   }
+    if(nb_velo==0){
+     System.out.println("nb_velo sur le site "+ this.getId()+" est" +nb_velo+" Donc je suis obligé d\'attendre que soit un camion oubien un autre client vienne déposer un nouveau vélo");
+   } 
+    if( nb_restitueurs !=0){
+     System.out.println("nb_restituteurs sur le site : "+this.getId()+"est "+nb_restitueurs+ " Donc je suis obligé d\'attendre que les restitueurs finissent et le dernier restituer finis lorsque nb_restituer=0");
+   } 
+   }
      while (emprunt_en_cours || nb_velo==0 || nb_restitueurs !=0) {  try { wait();} catch( Exception e){} }
      //23
      emprunt_en_cours=true;
      nb_emprunteurs++;
-     System.out.println(" je commence à emprunter donc emprunt_en_cours devient : "+emprunt_en_cours + " et nombre emprunteurs devient: "+nb_emprunteurs);
+     System.out.println(" je commence à emprunter"+" sur le site "+this.getId()+" donc emprunt_en_cours devient : "+emprunt_en_cours + " et nombre emprunteurs devient: "+nb_emprunteurs);
 }
 //19 action d'emprunter
 public void emprunter(){
    int ancien_nb_velo=nb_velo;
    nb_velo-=1;
-   System.out.println("j'emprunte 1 velo donc le nombre de vélo passe de :"+ancien_nb_velo+" à "+ nb_velo+" sur le site de départ");
+   System.out.println("j'emprunte 1 velo donc le nombre de vélo passe de :"+ancien_nb_velo+" à "+ nb_velo+" sur le site de depart "+this.getId());
 }
 
 synchronized void fin_emprunt(){
@@ -94,12 +109,22 @@ synchronized void fin_emprunt(){
 
 //6 II-restituer
 synchronized void debut_restituer(){
-  System.out.println("je commence à restituer le vélo emprunté je vérifie s'il n'y a pas quelqu'un qui a une restitution en cours");
-  System.out.println(" restitution en cours: "+restitution_en_cours);
-  System.out.println(" je vérifie que le nombre de vélo n'atteint pas stock max autrement il n'y aurait plus de place pour restituer je devrais attendre");
-  System.out.println("nb_velo: "+ nb_velo +" et stock max est égal à :" +STOCK_MAX);
-  System.out.println("je vérifie que le dernier emprunteur a fini égalemnt");
-  System.out.println("nb_emprunteurs: "+nb_emprunteurs);
+  System.out.println(" est ce que je peux restituer mon velo sur le site "+this.getId()+ " ?( debut_restituer )");
+  if(!restitution_en_cours && nb_velo != STOCK_MAX && nb_emprunteurs ==0 ){
+         System.out.println("rien ne me bloque sur le site "+this.getId()+" , je peux directement restituer");
+
+  }else{
+    if( nb_velo == STOCK_MAX){
+        System.out.println("nb_velo: "+ nb_velo +" et stock max est égal à :" +STOCK_MAX+ " donc il n\' y a pour le moment pas de place pour restituer les vélos sur le site "+ this.getId()+" je dois attendre");
+    }
+    if(restitution_en_cours){
+            System.out.println(" restitution en cours: "+restitution_en_cours+" quelqu\\'un d'autre est déjà entrain de restituer un vélo sur le site "+ this.getId()+" j\'attend que ca se termine !");
+
+    }
+     if(nb_emprunteurs !=0){
+      System.out.println("il y a déjà "+nb_emprunteurs+"mprunteurs:  sur le site "+ this.getId()+" je suis donc obligé d\'attendre que le dernier finisse");
+    }
+  }
 
     while( nb_velo == STOCK_MAX || restitution_en_cours || nb_emprunteurs !=0){ try { wait();} catch( Exception e){} }
     //24
@@ -116,7 +141,7 @@ synchronized void debut_restituer(){
 public void restituer(){
      int ancien_nb_velo=nb_velo;
      nb_velo ++;
-    System.out.println("je restitue un velon donc nb_velo passe de : "+ ancien_nb_velo+" à "+ nb_velo+" sur le site d'arrivée");
+    System.out.println("je restitue un velon donc nb_velo passe de : "+ ancien_nb_velo+" à "+ nb_velo+" sur le site d'arrivee " +this.getId());
   }
 //25
 
@@ -125,7 +150,7 @@ synchronized void fin_restituer(){
   restitution_en_cours=false;
    System.out.println("j'ai fini de restituer donc :");
    System.out.println("nb_restitueurs devient: "+nb_restitueurs+" et restitution_en_cours devient: "+restitution_en_cours);
-   System.out.println("et je reveille tous ceux qui sont en attente");
+   System.out.println("et je reveille tous ceux qui sont en attente pour soit emprunter ou restituer aussi oubien le camion pour soit décharger ou charger des vélos");
   notifyAll();
 }
 
