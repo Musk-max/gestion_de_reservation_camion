@@ -49,3 +49,13 @@ Copier le code
 14) Me debrouiller pour afficher le nom  du client qui vient de demarrer (j'ai donc modifier nos constructeurs de clients dans tous les fichiers pour que a l'initialisation chaque client ait un numero)
 15) Normalement de pas son contenu la méthode emprunter de client devrait etre atomique sauf si la premiere instruction c\'est l\'ordo qui choisit qui la joue
 16) question 1 : pourquoi les starts ne sont pas séquentiels dans l\'execution de leur premiere methode en tout cas c\'est un constat que je viens de faire
+# Mercredi 15/10/2025
+17) 42 et 42\' dans  camion
+18) 43 dans SystemeEmprunt
+19)44 à 44\' et 46 et 47 et 47\' dans camion
+20) 45 et 48 Site
+21) 46 testons la methode charger de camion
+22)49 site et 49\' SystemeEmprunt
+23)50 et 50\'dans site au niveau de debutEmprunt( boucle pour afficher des caracteres separateurs) et plusieurs copie de 50 partout dans le code de site ou il y a un affichage pour creer des espaces
+24) 51 dans  SystemeEmprunt pour juste informer sur les legendes de nos affichages
+

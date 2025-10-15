@@ -31,17 +31,23 @@ class SystemeEmprunt {
 			}
 			while(siteDep == siteArr);//30  ajout de l'instanciation des site dans un do while pour qu'ils soient réinstanciés tant qu'ils sont différents
 			clients[i] = new Client(sites[siteDep], sites[siteArr],i);
+			//49' des que on attribue un site de depart et d'arrivee a un client on enregistre egalement le clients dans chacun des sites
+			sites[siteDep].clients[i]=clients[i];
+			sites[siteDep].clients[i]=clients[i];
 		}
-		clients[1].start();
-
+		//51 affichage a titre informatif des legendes utilisees dans notre code
+          System.out.println( "note: debut emprunt-1-2 signifie debut emprunt 1 du client 2");
 		/* Instanciation du camion */
-		//camion = new Camion(sites);
+		camion = new Camion(sites);
+		 /* 43 Demarrage du camion */
+	    //allons définir la méthode run du camion en 43'
+		 camion.start();
 
-    /* Démarrage du camion et des clients  bref des threads dans une methode fonctionner*/
+    /* Démarrage du camion et des clients  bref des threads à l'interieur du constructeur du systeme, donc dès qu'un systeme est instanciés eux ils demarrent automatiquement*/
     /* TODO */
 	//31 Demarrage d'un client
 	//31' D'abord on va faire la méthode run d'un client vu que c'est un thread
-
+     clients[1].start();
 	//40 puis 40'
 	// on créé juste des objets clients hors de la boucle prévue par le TP pour tester que nos methodes emprunter et restituer de clients fonctionnent bien correctement
 	// et le scénario est que le client 1 va de son site de départ vers son site d'arrivée et que les clients 2 et 3 sont en  sur le site d'arrivée du clients 1 pour emprunter
@@ -55,6 +61,8 @@ class SystemeEmprunt {
 	  //41 puis 41'
 	  c2.start();
 	  c3.start();
+	
+	
 	 
   }
   
