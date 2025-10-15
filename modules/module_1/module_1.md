@@ -58,4 +58,7 @@ Copier le code
 22)49 site et 49\' SystemeEmprunt
 23)50 et 50\'dans site au niveau de debutEmprunt( boucle pour afficher des caracteres separateurs) et plusieurs copie de 50 partout dans le code de site ou il y a un affichage pour creer des espaces
 24) 51 dans  SystemeEmprunt pour juste informer sur les legendes de nos affichages
-
+25) 52 et 53 dans Site 
+26) 54 dans camion
+27) 55 dans site
+28)56 , 56\', 56 suites dans camion et aussi 56 suite dans SystemeEmprunt

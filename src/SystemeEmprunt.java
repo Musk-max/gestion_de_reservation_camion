@@ -47,21 +47,43 @@ class SystemeEmprunt {
     /* TODO */
 	//31 Demarrage d'un client
 	//31' D'abord on va faire la méthode run d'un client vu que c'est un thread
-     clients[1].start();
+	for(int i=0;i< clients.length;i++)
+     	clients[i].start();
 	//40 puis 40'
 	// on créé juste des objets clients hors de la boucle prévue par le TP pour tester que nos methodes emprunter et restituer de clients fonctionnent bien correctement
 	// et le scénario est que le client 1 va de son site de départ vers son site d'arrivée et que les clients 2 et 3 sont en  sur le site d'arrivée du clients 1 pour emprunter
 	//des vélos mais on a malheureusement initialisé les stocks de vélos à 1 donc l'ordananceur va permettre seulement à l'un  des deux d'emprunter et de se déplacer
 	//et l'autre est censé etre en attente de l'arrivée du client 1 donc on veut vérifier que l'attente fonctionne bien
 	//Puis on a choisi comme site d'arrivée des 2 autres clients site de départ du client 1 car c'est un moyen sur de s'assurer que leur site de départ est différent de leur site d'arrivée sinon on aurait pu choisir d'autres valeurs
-	Client c2=new Client(clients[1].siteArr, clients[1].siteDep,2);
-	Client c3=new Client(clients[1].siteArr, clients[1].siteDep,3);
+	//Client c2=new Client(clients[1].siteArr, clients[1].siteDep,2);
+	//Client c3=new Client(clients[1].siteArr, clients[1].siteDep,3);
 	
       
 	  //41 puis 41'
-	  c2.start();
-	  c3.start();
+	  //c2.start();
+	  //c3.start();
 	
+	  //56 suite 
+	   // attendre la fin de tous les clients
+        for (int j = 0; j < NB_CLIENTS; j++) {
+            try {
+                clients[j].join(); // attend que le client se termine
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+		//56 suite tous les clients sont terminés → on arrête le camion
+        camion.arreter();
+
+		// 56 suite attendre la fin propre du camion
+        try {
+            camion.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Simulation terminée : tous les clients + le camion sont arrêtés.");
 	
 	 
   }

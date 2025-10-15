@@ -3,12 +3,17 @@ public class Site {
 
 /* Constantes communes à tous les sites */
 
-static final int STOCK_INIT = 3;
+static final int STOCK_INIT = 5;
 static final int STOCK_MAX = 10;
-static final int BORNE_SUP = 1;
+static final int BORNE_SUP = 8;
 static final int BORNE_INF = 2;
 //34 d'après la ligne 20 de SystemeEmprunt le site doit etre instancié avec un id
 int id;
+
+//53 de nouvelles variables pour faire attendre les clients lorsque le camion est en action
+boolean chargement_en_cours;
+boolean dechargement_en_cours;
+
 
 //49 creons une liste de clients pour enregistrer les clients qui sont sur un meme site
 //on choisit 20 clients par defaut car notre systeme en simule pour 20 mais on va plus tard choisir une arraylist comme data structure
@@ -239,7 +244,7 @@ synchronized void fin_restituer(int id_client){
   notifyAll();
 }
 //45 methode charger execedent qui ramene le stock du site a STOCK_INIT a chaque fois qu'il depasse BORN_SUP et  les velos enleves seront pris par le camion
-public synchronized void charger_excedent_dans_camion(int excedent) {
+/*public synchronized void charger_excedent_dans_camion(int excedent) {
       int ancien_nb_velo=nb_velo;
       System.out.println("le  nb_velo sur le site  "+this.getId()+" avant  le passage du camion est de "+ ancien_nb_velo);
       //50 caractere pour separer les affichage de clients différents
@@ -252,11 +257,11 @@ public synchronized void charger_excedent_dans_camion(int excedent) {
     for (int i=0;i<1; i++){
       System.out.println(" ");
     }
-}
+}*/
 //48 methode prendre complement dans camion qui ramene le stock du site a STOCK_INIT a chaque fois qu'il est en dessous de BORN_INF 
 // enlevant la quantite à completer de velo du camion , et en donnant cette quantite la au site
 // mais si la quantite dans le camion ne suffit pas donner tout ce que le camion a au site dans ce cas le stock du camion devient 0
-public void prendre_complement_dans_camion(int quantite_a_completer) {
+/*public synchronized void prendre_complement_dans_camion(int quantite_a_completer) {
      int ancien_nb_velo=nb_velo;
       System.out.println("le  nb_velo sur le site  "+this.getId()+" avant  le passage du camion est de "+ ancien_nb_velo);
       //50 caractere pour separer les affichage de clients différents
@@ -270,10 +275,148 @@ public void prendre_complement_dans_camion(int quantite_a_completer) {
       System.out.println(" ");
     }
 }
+*/
 
-//26 Test de scenarios pour les méthodes emprunter et restituer 
-//27 Pour pouvoir tester ce scenario là on va realiser la classe Client 
-  
+// 52 Separons prendre_complement_dans_camion() en debut_prendre_complement_dans_camion, prendre_complement_dans_camion() et fin_prendre_complement_dans_camion()
+
+  // --- 1) DEBUT prendre_complement_dans_camion ---
+synchronized void debut_prendre_complement_dans_camion(int quantite_a_completer) {
+    // Séparation visuelle
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+
+    System.out.println("Debut camion-1: le camion arrive sur le site " + this.getId() +
+        " pour déposer " + quantite_a_completer + " vélos.");
+
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+
+    // Ici, on peut imaginer une attente si le site est occupé
+    // Exemple : pendant un emprunt ou une restitution
+    while (emprunt_en_cours || restitution_en_cours) {
+        try {
+            System.out.println("Debut camion-2: le camion doit attendre car le site "
+                + this.getId() + " est occupé (emprunt_en_cours=" + emprunt_en_cours +
+                ", restitution_en_cours=" + restitution_en_cours + ")");
+            wait();
+        } catch (Exception e) {
+        }
+    }
+
+    System.out.println("Debut camion-3: le camion peut maintenant déposer ses vélos sur le site " + this.getId());
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+}
+
+// ACTION prendre_complement_dans_camion ---
+public void prendre_complement_dans_camion(int quantite_a_completer) {
+    int ancien_nb_velo = nb_velo;
+
+    System.out.println("Camion-1: nb_velo sur le site " + this.getId() +
+        " avant le passage du camion est de " + ancien_nb_velo);
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+
+    nb_velo += quantite_a_completer;
+
+    System.out.println("Camion-2: nb_velo sur le site " + this.getId() +
+        " après le passage du camion est de " + nb_velo);
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+}
+// --- 3) FIN prendre_complement_dans_camion ---
+synchronized void fin_prendre_complement_dans_camion(int quantite_a_completer) {
+    System.out.println("Fin camion-1: le camion a fini de déposer " + quantite_a_completer +
+        " vélos sur le site " + this.getId());
+
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+
+    System.out.println("Fin camion-2: le camion réveille tous ceux qui étaient en attente sur le site " + this.getId());
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+
+    notifyAll();
+}
+
+
+//26 Test de scenarios pour les méthodes emprunter et restituer
+//27 Pour pouvoir tester ce scenario là on va realiser la classe Client
+//55 separons egalement charger_excedent_dans_camion_en trois
+// --- 1) DEBUT charger_excedent_dans_camion ---
+synchronized void debut_charger_excedent_dans_camion(int excedent) {
+    // Séparation visuelle
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+
+    System.out.println("Debut camion-charger-1: le camion arrive sur le site " + this.getId() +
+        " pour CHARGER un excédent de " + excedent + " vélos.");
+
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+
+    // Attente si le site est occupé (par exemple, emprunt ou restitution en cours)
+    while (emprunt_en_cours || restitution_en_cours) {
+        try {
+            System.out.println("Debut camion-charger-2: le camion doit attendre car le site "
+                + this.getId() + " est occupé (emprunt_en_cours=" + emprunt_en_cours +
+                ", restitution_en_cours=" + restitution_en_cours + ")");
+            wait();
+        } catch (Exception e) {
+        }
+    }
+
+    System.out.println("Debut camion-charger-3: le camion peut maintenant charger les vélos sur le site " + this.getId());
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+}
+
+
+// 
+public void charger_excedent_dans_camion(int excedent) {
+    int ancien_nb_velo = nb_velo;
+
+    System.out.println("Camion-charger-1: nb_velo sur le site " + this.getId() +
+        " avant le passage du camion est de " + ancien_nb_velo);
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+
+    nb_velo -= excedent;
+
+    System.out.println("Camion-charger-2: nb_velo sur le site " + this.getId() +
+        " après le passage du camion est de " + nb_velo);
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+}
+
+
+// --- 3) FIN charger_excedent_dans_camion ---
+synchronized void fin_charger_excedent_dans_camion(int excedent) {
+    System.out.println("Fin camion-charger-1: le camion a fini de charger " + excedent +
+        " vélos sur le site " + this.getId());
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+
+    System.out.println("Fin camion-charger-2: le camion réveille tous ceux qui sont en attente (clients ou autres camions) sur le site " + this.getId());
+    for (int i = 0; i < 1; i++) {
+        System.out.println(" ");
+    }
+
+    notifyAll();
+}
 }
 
 
